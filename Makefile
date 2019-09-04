@@ -7,6 +7,7 @@ CP           = $(TOOLCHAIN)objcopy
 AS           = $(TOOLCHAIN)gcc -x assembler-with-cpp
 HEX          = $(CP) -O ihex
 BIN          = $(CP) -O binary -S
+OBJDUMP     =$(TOOLCHAIN)objdump
 
 # define mcu, specify the target processor
 ARCH          = rv32imac
@@ -31,6 +32,7 @@ AS_FLAGS = $(ARCH_FLAGS) -g -gdwarf-2 -Wa,-amhls=$(<:.s=.lst)
 # makefile rules
 #
 all: $(OBJECTS)
+	"$(OBJDUMP)" -D "Synth_rv32.o" > "Synth_rv32.dump"
 
 
 %.o: %.s

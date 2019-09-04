@@ -74,10 +74,10 @@ loopSynth:
 	add t6,t5,t6  // Load signed 16bit sample to t6
     lh t6,(t6) //
 	sw t6,pSampleVal(pSoundUnit)
-	mul t4,t6,t4 //sample*envelope/256
-    srai t4,t4,8
+	mul t4,t6,t4 //sample*envelope
+    // srai t4,t4,8
 	sw t4,pVal(pSoundUnit)
-    add mixOut,t4,mixOut //mixOut+=sample*envelope/256
+    add mixOut,t4,mixOut //mixOut+=sample*envelope
 	
     lw t6,pWavetablePos(pSoundUnit)
     lw t5,pIncrement(pSoundUnit)
@@ -100,7 +100,7 @@ mv pSoundUnit,a1
 sw mixOut,pMixOut(pSoundUnit)
 
 // mixOut /=1<<6, 2^(10-1)<= mixOut <=2^(10-1)-1
-srai mixOut,mixOut,6
+srai mixOut,mixOut,(8+6)
 li t5,-512
 bgt mixOut,t5,saturateLowerBoundSatisfied
 mv mixOut,t5
