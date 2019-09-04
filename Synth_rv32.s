@@ -84,7 +84,7 @@ loopSynth:
     add t6,t5,t6
 	lw t5,pWaveTableLen(pSoundUnit)
     slli t5,t5,8 //pWaveTableLen*=256    
-    bgt t5,t6,wavePosUpdateEnd  //bgt:">"
+    bgtu t5,t6,wavePosUpdateEnd  //bgt:">"
 	lw t5,pWaveTableLoopLen(pSoundUnit)
     slli t5,t5,8 //waveTableLoopLen*=256
     sub t6,t6,t5
@@ -147,10 +147,10 @@ loopGenDecayEnvlope:
 	lw t5,pWavetablePos(pSoundUnitGenEnv)
 	lw t6,pWaveTableAttackLen(pSoundUnitGenEnv)
 	slli t6,t6,8
-    blt t5,t6,conditionEnd // blt:"<"
+    bltu t5,t6,conditionEnd // blt:"<"
 	lw t5,pEnvelopePos(pSoundUnitGenEnv)
     li t6,(ENVELOP_LEN-1)
-    bge t5,t6,conditionEnd // bhs Higher or same (unsigned >= )
+    bgeu t5,t6,conditionEnd // bhs Higher or same (unsigned >= )
 	la t6,EnvelopeTable
 	add t6,t5,t6
 	lb t6,(t6)   // Load envelope to r6
