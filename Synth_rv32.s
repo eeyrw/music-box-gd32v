@@ -117,6 +117,7 @@ sh mixOut,(t5)
 li t5,PWM_OUT2
 sh mixOut,(t5)
 //pop {r1-r2,r4-r7,pc}
+ret
 .endfunc
 
 .func GenDecayEnvlopeAsm
@@ -161,6 +162,7 @@ addi loopIndexGenEnv,loopIndexGenEnv,-1 // set n = n-1
 addi pSoundUnitGenEnv,pSoundUnitGenEnv,SoundUnitSize
 bnez loopIndexGenEnv,loopGenDecayEnvlope
 //pop {r1-r2,r4-r7,pc}
+ret
 .endfunc
 
 .func NoteOnAsm
@@ -229,4 +231,5 @@ updateLastSoundUnitEnd:
 lw t5,pLastSoundUnit(pSynth)
 
 //pop {r1-r2,r4-r7,pc}
+ret
 .endfunc
