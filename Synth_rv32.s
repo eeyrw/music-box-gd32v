@@ -153,7 +153,7 @@ loopGenDecayEnvlope:
     bgeu t5,t6,conditionEnd // bhs Higher or same (unsigned >= )
 	la t6,EnvelopeTable
 	add t6,t5,t6
-	lb t6,(t6)   // Load envelope to r6
+	lbu t6,(t6)   // Load envelope to r6
 	sw t6,pEnvelopeLevel(pSoundUnitGenEnv)
     addi t5,t5,1
 	sw t5,pEnvelopePos(pSoundUnitGenEnv)
@@ -202,7 +202,7 @@ and note,note,t5
 slli note,note,1
 la t5,WaveTable_Celesta_C5_Increment
 add t5,t5,note
-lh t5,(t5)
+lhu t5,(t5)
 //cpsid i                // PRIMASK=1 Disable all interrupt except NMI ands Hardfault
 sw t5,pIncrement(pSynth)
 mv t5,x0
