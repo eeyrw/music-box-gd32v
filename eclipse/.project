@@ -90,11 +90,6 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>Application/WaveTableSynthesizer/Synth_rv32.s</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/WaveTableSynthesizer/Synth_rv32.s</locationURI>
-		</link>
-		<link>
 			<name>Application/WaveTableSynthesizer/AlgorithmTest.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/WaveTableSynthesizer/AlgorithmTest.c</locationURI>
@@ -110,25 +105,30 @@
 			<locationURI>PARENT-1-PROJECT_LOC/WaveTableSynthesizer/Player.c</locationURI>
 		</link>
 		<link>
-			<name>Application/WaveTableSynthesizer/score.c</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/WaveTableSynthesizer/score.c</locationURI>
-		</link>
-		<link>
 			<name>Application/WaveTableSynthesizer/SynthCore.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/WaveTableSynthesizer/SynthCore.c</locationURI>
 		</link>
 		<link>
+			<name>Application/WaveTableSynthesizer/Synth_rv32.s</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/WaveTableSynthesizer/Synth_rv32.S</locationURI>
+		</link>
+		<link>
 			<name>Application/WaveTableSynthesizer/WaveTable_Celesta_C5.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/WaveTableSynthesizer/WaveTable_Celesta_C5.c</locationURI>
-		</link>	
+		</link>
 		<link>
 			<name>Application/WaveTableSynthesizer/WaveTable_Celesta_C6.c</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/WaveTableSynthesizer/WaveTable_Celesta_C6.c</locationURI>
-		</link>				
+		</link>
+		<link>
+			<name>Application/WaveTableSynthesizer/score.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/WaveTableSynthesizer/score.c</locationURI>
+		</link>
 		<link>
 			<name>Peripherals/Source/gd32vf103_adc.c</name>
 			<type>1</type>

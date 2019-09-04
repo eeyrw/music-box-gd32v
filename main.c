@@ -131,16 +131,15 @@ void timer_config(void)
     timer_enable(TIMER0);
 }
 
-/*!
-    \brief      main function
-    \param[in]  none
-    \param[out] none
-    \retval     none
-*/
+
+extern void TestInit(void);
+extern void TestProcess(void);
 int main(void)
 {
     gpio_config(); 
     timer_config();
+    TestInit();
+    TestProcess();
 
     while (1);
 }

@@ -84,7 +84,8 @@ void TestUpdateTickFunc(void)
             printf("UpdateTickFunc get wrong in %ld loop.\n",i);
             break;
         }
-        UpdateTick(&player);
+        //UpdateTick(&player);
+        player.currentTick++;
     }
     if(i==player.currentTick)
         printf("UpdateTickFunc passed the test.\n");
