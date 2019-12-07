@@ -224,6 +224,7 @@ int main(void)
     eclic_global_interrupt_enable();
     eclic_set_nlbits(ECLIC_GROUP_LEVEL3_PRIO1);
     eclic_irq_enable(TIMER1_IRQn,1,0);
+    uart_config();
     timer_config();
     TestInit();
     TestProcess();

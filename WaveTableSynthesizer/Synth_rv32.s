@@ -38,7 +38,7 @@
 
 
 .equ ENVELOP_LEN,256
-.equ POLY_NUM,32
+.equ POLY_NUM,5
 .equ pMixOut,SoundUnitSize*POLY_NUM
 .equ pLastSoundUnit,pMixOut+4
 
@@ -66,7 +66,7 @@ mv pSoundUnit,a0
 
 loopSynth:
 	lw t4,pEnvelopeLevel(pSoundUnit)
-	beqz loopIndex,loopSynthEnd
+	beqz t4,loopSynthEnd
     lw t5,pWaveTableAddress(pSoundUnit)
     lw t6,pWavetablePos(pSoundUnit)
     srli  t6,t6,8 //wavetablePos /= 256
@@ -84,7 +84,7 @@ loopSynth:
     add t6,t5,t6
 	lw t5,pWaveTableLen(pSoundUnit)
     slli t5,t5,8 //pWaveTableLen*=256    
-    bgtu t5,t6,wavePosUpdateEnd  //bgt:">"
+    bgeu t5,t6,wavePosUpdateEnd  //bgeu:">="
 	lw t5,pWaveTableLoopLen(pSoundUnit)
     slli t5,t5,8 //waveTableLoopLen*=256
     sub t6,t6,t5
@@ -95,7 +95,7 @@ loopSynthEnd:
 addi loopIndex,loopIndex,-1 // set n = n-1
 addi pSoundUnit,pSoundUnit,SoundUnitSize
 bnez loopIndex,loopSynth
-mv pSoundUnit,a1
+mv pSoundUnit,a0
 
 sw mixOut,pMixOut(pSoundUnit)
 
