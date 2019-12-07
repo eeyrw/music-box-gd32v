@@ -2,7 +2,7 @@
     \file  drv_usb_hw.h
     \brief usb hardware configuration header file
 
-    \version 2019-6-5, V1.0.0, firmware for GD32 USBFS&USBHS
+    \version 2019-06-05, V1.0.0, firmware for GD32 USBFS&USBHS
 */
 
 /*

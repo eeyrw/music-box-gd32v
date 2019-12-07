@@ -2,7 +2,7 @@
     \file  drv_usb_core.c
     \brief USB core driver which can operate in host and device mode
 
-    \version 2019-6-5, V1.0.0, firmware for GD32 USBFS&USBHS
+    \version 2019-06-05, V1.0.0, firmware for GD32 USBFS&USBHS
 */
 
 /*

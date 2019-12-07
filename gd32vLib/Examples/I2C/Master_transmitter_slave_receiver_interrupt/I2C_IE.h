@@ -2,7 +2,7 @@
     \file  I2C1_IE.c
     \brief The header file of I2C0 and I2C1 interrupt
     
-    \version 2019-6-5, V1.0.0, firmware for GD32VF103
+    \version 2019-06-05, V1.0.0, firmware for GD32VF103
 
 */
 

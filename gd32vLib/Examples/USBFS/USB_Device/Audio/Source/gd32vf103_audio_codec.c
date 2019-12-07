@@ -2,7 +2,7 @@
     \file  gd3210c_audio_codec.c
     \brief This file includes the low layer driver for CS43L22 Audio Codec
 
-    \version 2019-6-5, V1.0.0, firmware for GD32VF103
+    \version 2019-06-05, V1.0.0, firmware for GD32VF103
 */
 
 /*

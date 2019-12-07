@@ -2,7 +2,7 @@
     \file  usb_ch9_std.h
     \brief USBFS driver basic configuration
 
-    \version 2019-6-5, V1.0.0, firmware for GD32VF103
+    \version 2019-06-05, V1.0.0, firmware for GD32VF103
 */
 
 /*

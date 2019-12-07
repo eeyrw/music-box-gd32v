@@ -2,7 +2,8 @@
     \file  usbd_flash_if.c
     \brief USB DFU device flash interface functions
 
-    \version 2019-6-5, V1.0.0, firmware for GD32VF103
+    \version 2019-06-05, V1.0.0, firmware for GD32VF103
+    \version 2019-09-20, V1.0.1, firmware for GD32VF103
 */
 
 /*
@@ -80,14 +81,14 @@ fmc_state_enum Option_Byte_Write(uint32_t Mem_Add,uint8_t* data)
     ob_unlock();
 
     /* start erase the option byte */
-    FMC_CTL0 |= FMC_CTL0_OBER;
-    FMC_CTL0 |= FMC_CTL0_START;
+    FMC_CTL |= FMC_CTL_OBER;
+    FMC_CTL |= FMC_CTL_START;
 
     status = fmc_ready_wait(FMC_TIMEOUT_COUNT);
 
-    FMC_CTL0 &= ~FMC_CTL0_OBER;
+    FMC_CTL &= ~FMC_CTL_OBER;
     /* set the OBPG bit */
-    FMC_CTL0 |= FMC_CTL0_OBPG;
+    FMC_CTL |= FMC_CTL_OBPG;
 
     /*OptionBytes always have 16Bytes*/
     for(index = 0;index<15;index=index+2)
@@ -100,7 +101,7 @@ fmc_state_enum Option_Byte_Write(uint32_t Mem_Add,uint8_t* data)
     }
 
       /* if the program operation is completed, disable the OPTPG Bit */
-    FMC_CTL0 &= ~FMC_CTL0_OBPG;
+    FMC_CTL &= ~FMC_CTL_OBPG;
 
     fmc_lock();
 

@@ -2,7 +2,7 @@
     \file  exmc_norflash.c
     \brief EXMC NOR Flash(M29W128FH) driver
 
-    \version 2019-6-5, V1.0.0, firmware for GD32VF103
+    \version 2019-06-05, V1.0.0, firmware for GD32VF103
 */
 
 /*

@@ -2,7 +2,7 @@
     \file    main.c
     \brief   I2S master send and slave receive communication use DMA
 
-    \version 2019-6-5, V1.0.0, firmware for GD32VF103
+    \version 2019-06-05, V1.0.0, firmware for GD32VF103
 */
 
 /*

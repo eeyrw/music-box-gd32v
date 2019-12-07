@@ -2,7 +2,7 @@
     \file  rtc.c
     \brief RTC check and config,time_show and time_adjust function
 
-    \version 2019-6-5, V1.0.0, firmware for GD32VF103   
+    \version 2019-06-05, V1.0.0, firmware for GD32VF103   
 */
 
 /*

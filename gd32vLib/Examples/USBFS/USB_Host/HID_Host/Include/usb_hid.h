@@ -2,7 +2,7 @@
     \file  usb_hid.h
     \brief definitions for the USB HID class
 
-    \version 2019-6-5, V1.0.0, firmware for GD32VF103
+    \version 2019-06-05, V1.0.0, firmware for GD32VF103
 */
 
 /*

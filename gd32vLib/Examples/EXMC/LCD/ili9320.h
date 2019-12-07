@@ -2,7 +2,8 @@
     \file  ili9320.h
     \brief LCD driver header file
 
-    \version 2019-6-5, V1.0.0, firmware for GD32VF103
+    \version 2019-06-05, V1.0.0, firmware for GD32VF103
+    \version 2019-09-18, V1.0.1, firmware for GD32VF103
 */
 
 /*
@@ -190,6 +191,9 @@ typedef struct
 
 #define CHAR_DIRECTION_HORIZONTAL         ((uint16_t)0x0000U) /*!< character display direction is horizontal */
 #define CHAR_DIRECTION_VERTICAL           ((uint16_t)0x0001U) /*!< character display direction is vertical */
+
+#define LCD_PIXEL_WIDTH          ((uint16_t)320)
+#define LCD_PIXEL_HEIGHT         ((uint16_t)240)
 
 /* initialize the LCD */
 void lcd_init(void);

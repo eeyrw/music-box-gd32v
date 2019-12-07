@@ -2,7 +2,7 @@
     \file  main.c
     \brief the example of EXTI which generates an interrupt request and toggle the LED
 
-    \version 2019-6-5, V1.0.0, firmware for GD32VF103
+    \version 2019-06-05, V1.0.0, firmware for GD32VF103
 */
 
 /*

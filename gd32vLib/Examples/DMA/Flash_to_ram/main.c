@@ -2,7 +2,7 @@
     \file    main.c
     \brief   flash to ram demo
 
-    \version 2019-6-5, V1.0.0, firmware for GD32VF103
+    \version 2019-06-05, V1.0.1, firmware for GD32VF103
 */
 
 /*
@@ -78,13 +78,17 @@ int main(void)
     /* define the number of page to be erased */
     count = TRANSFER_NUM / FMC_PAGE_SIZE;
     /* clear all pending flags */
-    fmc_flag_clear(FMC_FLAG_PGERR | FMC_FLAG_WPERR | FMC_FLAG_END);
+    fmc_flag_clear(FMC_FLAG_PGERR);
+    fmc_flag_clear(FMC_FLAG_WPERR);
+    fmc_flag_clear(FMC_FLAG_END);
 
     /* erase the flash pages */
     for(i = 0; i <= count; i++){
         fmcstatus = fmc_page_erase(BANK0_WRITE_START_ADDR + (FMC_PAGE_SIZE * i));
         wperror += (fmcstatus == FMC_WPERR);
-        fmc_flag_clear(FMC_FLAG_PGERR | FMC_FLAG_WPERR | FMC_FLAG_END);
+        fmc_flag_clear(FMC_FLAG_PGERR);
+        fmc_flag_clear(FMC_FLAG_WPERR);
+        fmc_flag_clear(FMC_FLAG_END);
     }
 
     if(wperror != 0){
@@ -112,7 +116,9 @@ int main(void)
     /* unlock the flash bank1 program erase controller */
     fmc_unlock();
     /* clear all pending flags */
-    fmc_flag_clear(FMC_FLAG_PGERR | FMC_FLAG_WPERR | FMC_FLAG_END);
+    fmc_flag_clear(FMC_FLAG_PGERR);
+    fmc_flag_clear(FMC_FLAG_WPERR);
+    fmc_flag_clear(FMC_FLAG_END);
 
     /* program flash bank1 */
     address = BANK0_WRITE_START_ADDR;
@@ -123,7 +129,9 @@ int main(void)
         fmcstatus = fmc_word_program(address, transdata);
         address = address + 4;
         wperror += (FMC_WPERR == fmcstatus);
-        fmc_flag_clear(FMC_FLAG_PGERR | FMC_FLAG_WPERR | FMC_FLAG_END);
+        fmc_flag_clear(FMC_FLAG_PGERR);
+        fmc_flag_clear(FMC_FLAG_WPERR);
+        fmc_flag_clear(FMC_FLAG_END);
     }
 
     if(wperror != 0){

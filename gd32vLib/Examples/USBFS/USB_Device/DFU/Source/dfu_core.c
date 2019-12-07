@@ -2,7 +2,7 @@
     \file  dfu_core.c
     \brief USB DFU device class core functions
 
-    \version 2019-6-5, V1.0.0, firmware for GD32VF103
+    \version 2019-06-05, V1.0.0, firmware for GD32VF103
 */
 
 /*
@@ -129,7 +129,7 @@ const usb_descriptor_configuration_set_struct configuration_descriptor =
         .bInterfaceClass = 0xFE,
         .bInterfaceSubClass = 0x01,
         .bInterfaceProtocol = 0x02,
-        .iInterface = 0x00
+        .iInterface = 0x05
     },
 
     .DFU_Function_Desc = 
@@ -278,6 +278,7 @@ uint8_t dfu_req_handler (usb_dev *pudev, usb_req *req)
             break;
         case USB_SET_INTERFACE:
             USBD_DFU_AltSet = (uint8_t)(req->wValue);
+            usbd_ctl_status_send(pudev);
             break;
         default:
             break;

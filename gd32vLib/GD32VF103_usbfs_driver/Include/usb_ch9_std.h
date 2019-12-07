@@ -2,7 +2,7 @@
     \file  usb_ch9_std.h
     \brief USB 2.0 standard defines
 
-    \version 2019-6-5, V1.0.0, firmware for GD32 USBFS&USBHS
+    \version 2019-06-05, V1.0.0, firmware for GD32 USBFS&USBHS
 */
 
 /*

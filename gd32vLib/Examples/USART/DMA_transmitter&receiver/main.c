@@ -2,7 +2,7 @@
     \file  main.c
     \brief USART DMA transmitter receiver
 
-    \version 2019-6-5, V1.0.0, firmware for GD32VF103
+    \version 2019-06-05, V1.0.0, firmware for GD32VF103
 */
 
 /*
@@ -43,7 +43,7 @@ uint8_t txbuffer[] = "\n\rUSART DMA receive and transmit example, please input 1
 /*!
     \brief      main function
 
-    \version 2019-6-5, V1.0.0, firmware for GD32VF103
+    \version 2019-06-05, V1.0.0, firmware for GD32VF103
     \param[in]  none
     \param[out] none
     \retval     none

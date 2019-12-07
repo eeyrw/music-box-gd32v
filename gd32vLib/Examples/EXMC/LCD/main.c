@@ -2,7 +2,8 @@
     \file  main.c
     \brief LCD test demo
 
-    \version 2019-6-5, V1.0.0, firmware for GD32VF103
+    \version 2019-06-05, V1.0.0, firmware for GD32VF103
+    \version 2019-09-18, V1.0.1, firmware for GD32VF103
 */
 
 /*
@@ -37,8 +38,7 @@ OF SUCH DAMAGE.
 #include "ili9320.h"
 #include "picture.h"
 
-uint8_t gd_website_string[]={"www.gigadevice.com"} ;
-uint16_t device_code;
+uint8_t gd_website_string[]={"www.gigadevice.com"};
 char_format_struct char_format;
 
 /*!
@@ -54,9 +54,6 @@ int main(void)
     /* configure the EXMC access mode */
     exmc_lcd_init();
 
-    /* read the LCD Controller device code:(0x8989) */
-    device_code = lcd_register_read(0x0000);
-
     /* initialize the LCD */
     lcd_init();
 
@@ -64,7 +61,7 @@ int main(void)
     lcd_clear(WHITE);
 
     /* draw the picture of Gigadevice logo */
-    lcd_picture_draw(40,100,40+160-1,100+87-1,(uint16_t *)(picture + BMP_HEADSIZE));
+    lcd_picture_draw(60,100,60+120-1,100+95-1,(uint16_t *)(picture + BMP_HEADSIZE));
 
     /* draw a rectangle */
     lcd_rectangle_draw(10,10,230,310,BLUE);

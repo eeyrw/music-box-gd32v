@@ -2,7 +2,7 @@
     \file  usbh_usr.c
     \brief user application layer for USBFS host-mode MSC class operation
 
-    \version 2019-6-5, V1.0.0, firmware for GD32VF103
+    \version 2019-06-05, V1.0.0, firmware for GD32VF103
 */
 
 /*
