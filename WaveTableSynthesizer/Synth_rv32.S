@@ -40,7 +40,7 @@
 
 
 .equ ENVELOP_LEN,256
-.equ POLY_NUM,5
+.equ POLY_NUM,32
 .equ pMixOut,SoundUnitSize*POLY_NUM
 .equ pLastSoundUnit,pMixOut+4
 
@@ -54,6 +54,11 @@
 
 .equ PWM_OUT1,0x40000438
 .equ PWM_OUT2,0x4000043C
+
+#define SPI1              (0x40000000U + 0x00003800U)  /*!< SPI base address                 */
+
+#define SPI_DATA                  (SPI1 + 0x0CU)                   /*!< SPI data register */
+
 
 .func SynthAsm
 SynthAsm:
@@ -97,28 +102,33 @@ loopSynthEnd:
 addi loopIndex,loopIndex,-1 // set n = n-1
 addi pSoundUnit,pSoundUnit,SoundUnitSize
 bnez loopIndex,loopSynth
-mv pSoundUnit,a0
 
-sw mixOut,pMixOut(pSoundUnit)
+
+
 
 // mixOut /=1<<6, 2^(10-1)<= mixOut <=2^(10-1)-1
-srai mixOut,mixOut,(8+6)
-li t5,-512
+srai mixOut,mixOut,(8+1)
+li t5,-32767
 bgt mixOut,t5,saturateLowerBoundSatisfied
 mv mixOut,t5
 saturateLowerBoundSatisfied:
-li t5,512
+li t5,32767
 ble mixOut,t5,saturateEnd
 mv mixOut,t5
 saturateEnd:
 
 // mixOut: [-512,511] -> [0,1023]
-add mixOut,mixOut,t5
-li t5,PWM_OUT1
-sh mixOut,(t5)
-li t5,PWM_OUT2
-sh mixOut,(t5)
+//add mixOut,mixOut,t5
+//li t5,PWM_OUT1
+//sh mixOut,(t5)
+//li t5,PWM_OUT2
+//sh mixOut,(t5)
 //pop {r1-r2,r4-r7,pc}
+li t5,SPI_DATA
+sh mixOut,(t5)
+mv pSoundUnit,a0
+sw mixOut,pMixOut(pSoundUnit)
+
 ret
 .endfunc
 
@@ -226,11 +236,11 @@ mv pSynth,a0
 lw t5,pLastSoundUnit(pSynth)
 
 addi t5,t5,1
-addi t5,t5,-POLY_NUM
-bnez t5,updateLastSoundUnitEnd
+addi t6,t5,-POLY_NUM
+bnez t6,updateLastSoundUnitEnd
 mv t5,x0
 updateLastSoundUnitEnd:
-lw t5,pLastSoundUnit(pSynth)
+sw t5,pLastSoundUnit(pSynth)
 
 //pop {r1-r2,r4-r7,pc}
 ret

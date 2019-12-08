@@ -13,7 +13,7 @@
 # Disable Interrupt
 #
 .macro DISABLE_MIE
-  csrc CSR_MSTATUS, MSTATUS_MIE  
+  csrc CSR_MSTATUS, MSTATUS_MIE
 .endm
 
 
@@ -72,8 +72,8 @@
 	FPSTORE f28, (20*REGBYTES + 16*FPREGBYTES)(sp)
 	FPSTORE f29, (20*REGBYTES + 17*FPREGBYTES)(sp)
 	FPSTORE f30, (20*REGBYTES + 18*FPREGBYTES)(sp)
-	FPSTORE f31, (20*REGBYTES + 19*FPREGBYTES)(sp)   
-  #endif    
+	FPSTORE f31, (20*REGBYTES + 19*FPREGBYTES)(sp)
+  #endif
 #endif
 
 
@@ -179,11 +179,11 @@
 # Save the mepc and mstatus
 #
 .macro SAVE_EPC_STATUS
-  csrr x5, CSR_MEPC  
+  csrr x5, CSR_MEPC
   STORE x5,  16*REGBYTES(sp)
-  csrr x5, CSR_MSTATUS  
+  csrr x5, CSR_MSTATUS
   STORE x5,  17*REGBYTES(sp)
-  csrr x5, CSR_MSUBM  
+  csrr x5, CSR_MSUBM
   STORE x5,  18*REGBYTES(sp)
 .endm
 
@@ -193,11 +193,11 @@
 #
 .macro RESTORE_EPC_STATUS
   LOAD x5,  16*REGBYTES(sp)
-  csrw CSR_MEPC, x5  
+  csrw CSR_MEPC, x5
   LOAD x5,  17*REGBYTES(sp)
-  csrw CSR_MSTATUS, x5  
+  csrw CSR_MSTATUS, x5
   LOAD x5,  18*REGBYTES(sp)
-  csrw CSR_MSUBM, x5  
+  csrw CSR_MSUBM, x5
 .endm
 
 
@@ -206,7 +206,7 @@
 ###############################################
 // Trap entry point
 //
-  .section      .text.trap	
+  .section      .text.trap
   .align 6// In CLIC mode, the trap entry must be 64bytes aligned
   .global trap_entry
 .weak trap_entry
@@ -240,13 +240,13 @@ trap_entry:
 ###############################################
 // IRQ entry point
 //
-  .section      .text.irq	
+  .section      .text.irq
   .align 2
   .global irq_entry
 .weak irq_entry
 irq_entry: // -------------> This label will be set to MTVT2 register
   // Allocate the stack space
-  
+
 
   SAVE_CONTEXT// Save 16 regs
 
@@ -256,29 +256,29 @@ irq_entry: // -------------> This label will be set to MTVT2 register
   csrrwi  x0, CSR_PUSHMEPC, 18
   //------This special CSR read operation, which is actually use Msubm as operand to directly store it to memory
   csrrwi  x0, CSR_PUSHMSUBM, 19
- 
+
 service_loop:
   //------This special CSR read/write operation, which is actually Claim the CLIC to find its pending highest
   // ID, if the ID is not 0, then automatically enable the mstatus.MIE, and jump to its vector-entry-label, and
-  // update the link register 
-  csrrw ra, CSR_JALMNXTI, ra 
-  
+  // update the link register
+  csrrw ra, CSR_JALMNXTI, ra
+
   //RESTORE_CONTEXT_EXCPT_X5
 
   #---- Critical section with interrupts disabled -----------------------
-  DISABLE_MIE # Disable interrupts 
+  DISABLE_MIE # Disable interrupts
 
   LOAD x5,  19*REGBYTES(sp)
-  csrw CSR_MSUBM, x5  
+  csrw CSR_MSUBM, x5
   LOAD x5,  18*REGBYTES(sp)
-  csrw CSR_MEPC, x5  
+  csrw CSR_MEPC, x5
   LOAD x5,  17*REGBYTES(sp)
-  csrw CSR_MCAUSE, x5  
+  csrw CSR_MCAUSE, x5
 
 
   RESTORE_CONTEXT
 
-  
+
   // Return to regular code
   mret
 

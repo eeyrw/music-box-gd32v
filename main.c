@@ -34,6 +34,10 @@ OF SUCH DAMAGE.
 
 #include "gd32vf103.h"
 #include <stdio.h>
+#include "Player.h"
+
+Player mPlayer;
+
 
 /* configure the GPIO ports */
 void gpio_config(void);
@@ -57,9 +61,12 @@ void SPI1_IRQHandler(void)
 	    /* send data */
 	    //while(RESET == spi_i2s_flag_get(SPI1, SPI_FLAG_TBE));
 if(RESET!=spi_i2s_flag_get(SPI1,I2S_FLAG_CH))
-		spi_i2s_data_transmit(SPI1,500);
+{
+	Player32kProc(&mPlayer);
+	//spi_i2s_data_transmit(SPI1,500);
+}
 else
-	spi_i2s_data_transmit(SPI1,100);
+	spi_i2s_data_transmit(SPI1,(uint16_t)mPlayer.mainSynthesizer.mixOut);
 
 
 	}
@@ -275,25 +282,28 @@ int main(void)
 
     eclic_global_interrupt_enable();
     eclic_set_nlbits(ECLIC_GROUP_LEVEL3_PRIO1);
-    eclic_irq_enable(TIMER1_IRQn,1,0);
+    //eclic_irq_enable(TIMER1_IRQn,1,0);
     eclic_irq_enable(SPI1_IRQn,1,0);
     gpio_config();
     uart_config();
-    timer_config();
+    //timer_config();
 
     /* SPI configure */
     spi_config();
+
+    PlayerInit(&mPlayer);
+    PlayerPlay(&mPlayer);
     /* SPI enable */
     i2s_enable(SPI1);
 
 
-    TestInit();
-    TestProcess();
-    uint16_t ap=0;
-while(1)
-{
-	//while(RESET == spi_i2s_flag_get(SPI1, SPI_FLAG_TBE));
-	//spi_i2s_data_transmit(SPI1,ap++);
-}
-    while (1);
+
+
+    while (1)
+    {
+        PlayerProcess(&mPlayer);
+    }
+
+    //TestInit();
+    //TestProcess();
 }

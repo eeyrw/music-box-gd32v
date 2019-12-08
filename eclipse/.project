@@ -110,7 +110,7 @@
 			<locationURI>PARENT-1-PROJECT_LOC/WaveTableSynthesizer/SynthCore.c</locationURI>
 		</link>
 		<link>
-			<name>Application/WaveTableSynthesizer/Synth_rv32.s</name>
+			<name>Application/WaveTableSynthesizer/Synth_rv32.S</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/WaveTableSynthesizer/Synth_rv32.S</locationURI>
 		</link>
