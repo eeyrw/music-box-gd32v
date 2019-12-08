@@ -1,3 +1,5 @@
+#include "riscv_encoding.h"
+
 .section .text
 .global SynthAsm
 .global GenDecayEnvlopeAsm
@@ -203,7 +205,7 @@ slli note,note,1
 la t5,WaveTable_Celesta_C5_Increment
 add t5,t5,note
 lhu t5,(t5)
-//cpsid i                // PRIMASK=1 Disable all interrupt except NMI ands Hardfault
+csrc CSR_MSTATUS, MSTATUS_MIE              // Disable all interrupt
 sw t5,pIncrement(pSynth)
 mv t5,x0
 sw t5,pWavetablePos(pSynth)
@@ -218,7 +220,7 @@ sw t5,pWaveTableAttackLen(pSynth)
 sw x0,pEnvelopePos(pSynth)
 li t5,255
 sw t5,pEnvelopeLevel(pSynth)
-//cpsie i               // PRIMASK=0 enable all interrupt
+csrs CSR_MSTATUS, MSTATUS_MIE              // Enable all interrupt
 mv pSynth,a0
 
 lw t5,pLastSoundUnit(pSynth)
