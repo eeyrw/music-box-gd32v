@@ -49,6 +49,22 @@ void TIMER1_IRQHandler(void)
 }
 
 
+
+
+void SPI1_IRQHandler(void)
+{
+	if(RESET != spi_i2s_interrupt_flag_get(SPI1, SPI_I2S_INT_FLAG_TBE)){
+	    /* send data */
+	    //while(RESET == spi_i2s_flag_get(SPI1, SPI_FLAG_TBE));
+if(RESET!=spi_i2s_flag_get(SPI1,I2S_FLAG_CH))
+		spi_i2s_data_transmit(SPI1,500);
+else
+	spi_i2s_data_transmit(SPI1,100);
+
+
+	}
+}
+
 /**
     \brief      configure the GPIO ports
     \param[in]  none
@@ -59,6 +75,7 @@ void gpio_config(void)
 {
     rcu_periph_clock_enable(RCU_GPIOA);
     rcu_periph_clock_enable(RCU_GPIOB);
+    rcu_periph_clock_enable(RCU_GPIOC);
     rcu_periph_clock_enable(RCU_AF);
 
     /*configure PA8/PA9/PA10(TIMER0/CH0/CH1/CH2) as alternate function*/
@@ -67,9 +84,17 @@ void gpio_config(void)
     gpio_init(GPIOA, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_10);
 
     /*configure PB13/PB14/PB15(TIMER0/CH0N/CH1N/CH2N) as alternate function*/
-    gpio_init(GPIOB, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_13);
-    gpio_init(GPIOB, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_14);
-    gpio_init(GPIOB, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_15);
+    //gpio_init(GPIOB, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_13);
+    //gpio_init(GPIOB, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_14);
+    //gpio_init(GPIOB, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_15);
+
+    /* I2S1 GPIO config: I2S1_WS/PB12, I2S1_CK/PB13, I2S_SD/PB15 */
+    gpio_init(GPIOB, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_15);
+
+    /* I2S2 GPIO config: I2S2_WS/PA4, I2S2_CK/PC10, I2S2_SD/PC12 */
+    //gpio_pin_remap_config(GPIO_SPI2_REMAP, ENABLE);
+    //gpio_init(GPIOC, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_50MHZ, GPIO_PIN_10 | GPIO_PIN_12);
+    //gpio_init(GPIOA, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_50MHZ, GPIO_PIN_4);
 }
 
 /**
@@ -216,18 +241,59 @@ int _put_char(int ch)
     return ch;
 }
 
+
+
+/*!
+    \brief      configure the SPI peripheral
+    \param[in]  none
+    \param[out] none
+    \retval     none
+*/
+void spi_config(void)
+{
+    rcu_pll2_config(RCU_PLL2_MUL8);
+    rcu_osci_on(RCU_PLL2_CK);
+    while((RCU_CTL & RCU_CTL_PLL2STB) == 0){
+    }
+    rcu_i2s1_clock_config(RCU_I2S1SRC_CKPLL2_MUL2);
+
+    rcu_periph_clock_enable(RCU_SPI1);
+
+    spi_i2s_deinit(SPI1);
+
+    i2s_init(SPI1, I2S_MODE_MASTERTX, I2S_STD_PHILLIPS, I2S_CKPL_LOW);
+    i2s_psc_config(SPI1, I2S_AUDIOSAMPLE_32K, I2S_FRAMEFORMAT_DT16B_CH16B, I2S_MCKOUT_DISABLE);
+    spi_i2s_interrupt_enable(SPI1,SPI_I2S_INT_TBE);
+
+}
+
+
 extern void TestInit(void);
 extern void TestProcess(void);
 int main(void)
 {
-    gpio_config(); 
+
     eclic_global_interrupt_enable();
     eclic_set_nlbits(ECLIC_GROUP_LEVEL3_PRIO1);
     eclic_irq_enable(TIMER1_IRQn,1,0);
+    eclic_irq_enable(SPI1_IRQn,1,0);
+    gpio_config();
     uart_config();
     timer_config();
+
+    /* SPI configure */
+    spi_config();
+    /* SPI enable */
+    i2s_enable(SPI1);
+
+
     TestInit();
     TestProcess();
-
+    uint16_t ap=0;
+while(1)
+{
+	//while(RESET == spi_i2s_flag_get(SPI1, SPI_FLAG_TBE));
+	//spi_i2s_data_transmit(SPI1,ap++);
+}
     while (1);
 }
