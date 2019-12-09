@@ -107,39 +107,51 @@ bnez loopIndex,loopSynth
 
 srai mixOut,mixOut,8 // mixOut/=255 ( envelope)
 
+//j limiterEnd
 
 #define FIX_POINT_WEIGHT 256
 #define TIME_CONST 0.3
 #define GAIN_1_FIX FIX_POINT_WEIGHT
-#define TIME_CONST_FIX FIX_POINT_WEIGHT*TIME_CONST
-#define THRESHOLD (32768-1) // 2^16-1
+#define TIME_CONST_FIX 15
+#define THRESHOLD (12768-1) // 2^16-1
 #define THRESHOLD_FIX THRESHOLD*FIX_POINT_WEIGHT
 beqz mixOut,limiterEnd
 li t5,THRESHOLD
 li t6,GAIN_1_FIX
 mv t4,mixOut
-bleu mixOut,t5,calcGainEnd
 bgtz mixOut,calcGainStart
 neg t4,mixOut
 calcGainStart:
+bleu t4,t5,calcGainEnd
 li t5,THRESHOLD_FIX
 divu t5,t5,t4
 mv t6,t5
 calcGainEnd:
+li t4,TIME_CONST_FIX
+mul t6,t4,t6
+la t5,lastLimiterGain
+lw t5,(t5)
+li t4,256-TIME_CONST_FIX
+mul t5,t4,t5
+add t6,t5,t6
+srai t6,t6,8
+
+la t5,lastLimiterGain
+sw t6,(t5)
 mul mixOut,t6,mixOut
 srai mixOut,mixOut,8
 limiterEnd:
 
 // mixOut /=1<<6, 2^(10-1)<= mixOut <=2^(10-1)-1
 //srai mixOut,mixOut,(8+1)
-//li t5,-32767
-//bgt mixOut,t5,saturateLowerBoundSatisfied
-//mv mixOut,t5
-//saturateLowerBoundSatisfied:
-//li t5,32767
-//ble mixOut,t5,saturateEnd
-//mv mixOut,t5
-//saturateEnd:
+li t5,-32767
+bge mixOut,t5,saturateLowerBoundSatisfied
+mv mixOut,t5
+saturateLowerBoundSatisfied:
+li t5,32767
+ble mixOut,t5,saturateEnd
+mv mixOut,t5
+saturateEnd:
 
 // mixOut: [-512,511] -> [0,1023]
 //add mixOut,mixOut,t5
