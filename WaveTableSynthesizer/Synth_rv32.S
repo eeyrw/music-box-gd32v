@@ -126,6 +126,7 @@ bleu t4,t5,calcGainEnd
 li t5,THRESHOLD_FIX
 divu t5,t5,t4
 mv t6,t5
+mv t1,t6
 calcGainEnd:
 
 la t5,lastLimiterGain
@@ -147,6 +148,10 @@ releaseSmooth:
     add t6,t5,t6
     srai t6,t6,8
 smoothEnd:
+
+bleu t6,t1,extraGainCorrectEnd
+mv t6,t1
+extraGainCorrectEnd:
 
 la t5,lastLimiterGain
 sw t6,(t5)
