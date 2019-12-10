@@ -110,9 +110,9 @@ srai mixOut,mixOut,8 // mixOut/=255 ( envelope)
 //j limiterEnd
 
 #define FIX_POINT_WEIGHT 256
-#define TIME_CONST 0.3
 #define GAIN_1_FIX FIX_POINT_WEIGHT
-#define TIME_CONST_FIX 15
+#define TIME_CONST_ATTACK_FIX 15
+#define TIME_CONST_RELEASE_FIX 15
 #define THRESHOLD (12768-1) // 2^16-1
 #define THRESHOLD_FIX THRESHOLD*FIX_POINT_WEIGHT
 beqz mixOut,limiterEnd
@@ -127,14 +127,26 @@ li t5,THRESHOLD_FIX
 divu t5,t5,t4
 mv t6,t5
 calcGainEnd:
-li t4,TIME_CONST_FIX
-mul t6,t4,t6
+
 la t5,lastLimiterGain
 lw t5,(t5)
-li t4,256-TIME_CONST_FIX
-mul t5,t4,t5
-add t6,t5,t6
-srai t6,t6,8
+bleu t6,t5,releaseSmooth
+attackSmooth:
+    li t4,GAIN_1_FIX-TIME_CONST_ATTACK_FIX
+    mul t6,t4,t6
+    li t4,TIME_CONST_ATTACK_FIX
+    mul t5,t4,t5
+    add t6,t5,t6
+    srai t6,t6,8
+    j smoothEnd
+releaseSmooth:
+    li t4,GAIN_1_FIX-TIME_CONST_RELEASE_FIX
+    mul t6,t4,t6
+    li t4,TIME_CONST_RELEASE_FIX
+    mul t5,t4,t5
+    add t6,t5,t6
+    srai t6,t6,8
+smoothEnd:
 
 la t5,lastLimiterGain
 sw t6,(t5)
