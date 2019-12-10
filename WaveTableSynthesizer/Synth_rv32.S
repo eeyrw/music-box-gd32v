@@ -106,14 +106,17 @@ addi pSoundUnit,pSoundUnit,SoundUnitSize
 bnez loopIndex,loopSynth
 
 srai mixOut,mixOut,8 // mixOut/=255 ( envelope)
+li t5,220
+mul mixOut,t5,mixOut //pre vol
+srai mixOut,mixOut,8
 
 //j limiterEnd
 
 #define FIX_POINT_WEIGHT 256
 #define GAIN_1_FIX FIX_POINT_WEIGHT
-#define TIME_CONST_ATTACK_FIX 15
-#define TIME_CONST_RELEASE_FIX 15
-#define THRESHOLD (12768-1) // 2^16-1
+#define TIME_CONST_ATTACK_FIX 100
+#define TIME_CONST_RELEASE_FIX 80
+#define THRESHOLD (32768-1) // 2^16-1
 #define THRESHOLD_FIX THRESHOLD*FIX_POINT_WEIGHT
 beqz mixOut,limiterEnd
 li t5,THRESHOLD
@@ -131,7 +134,7 @@ calcGainEnd:
 
 la t5,lastLimiterGain
 lw t5,(t5)
-bleu t6,t5,releaseSmooth
+bleu t5,t6,releaseSmooth
 attackSmooth:
     li t4,GAIN_1_FIX-TIME_CONST_ATTACK_FIX
     mul t6,t4,t6
