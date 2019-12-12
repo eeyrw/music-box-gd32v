@@ -28,6 +28,26 @@ typedef struct _Synthesizer
     uint32_t lastSoundUnit;
 }Synthesizer;
 
+typedef struct _SampleInfo
+{
+	uint8_t sampleCoverlowerPitch;
+	uint8_t sampleCoverupperPitch;
+	uint8_t sampleBasePitch;
+	uint8_t reserved;
+	uint32_t sampleAddr;
+	uint32_t sampleLen;
+	uint32_t sampleLoopStart;
+	uint32_t sampleLoopLen;
+}SampleInfo;
+
+typedef struct _InstrumentInfo
+{
+	uint8_t instrumentId;
+	uint8_t sampleNum;
+	uint32_t sampleBaseAddr;
+	SampleInfo *samples;
+}InstrumentInfo;
+
 
 extern void SynthInit(Synthesizer* synth);
 
