@@ -102,6 +102,14 @@ void gpio_config(void)
     //gpio_pin_remap_config(GPIO_SPI2_REMAP, ENABLE);
     //gpio_init(GPIOC, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_50MHZ, GPIO_PIN_10 | GPIO_PIN_12);
     //gpio_init(GPIOA, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_50MHZ, GPIO_PIN_4);
+
+    /*configure LED RGB*/
+    gpio_init(GPIOA, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_1|GPIO_PIN_4);
+    gpio_init(GPIOA, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_2);
+    gpio_init(GPIOC, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_13);
+    gpio_bit_set(GPIOA,GPIO_PIN_1);
+    gpio_bit_set(GPIOA,GPIO_PIN_2);
+    gpio_bit_set(GPIOC,GPIO_PIN_13);
 }
 
 /**
