@@ -3,6 +3,7 @@
     \brief USB host mode interrupt handler file
 
     \version 2019-06-05, V1.0.0, firmware for GD32 USBFS&USBHS
+    \version 2019-09-25, V1.0.1, firmware for GD32 USBFS&USBHS
 */
 
 /*
@@ -426,6 +427,7 @@ uint32_t usbh_int_pipe_in (usb_core_driver *pudev, uint32_t pp_num)
         case PIPE_DTGERR:
             pp->err_count = 0U;
             pp->urb_state = URB_ERROR;
+            pp->data_toggle_in ^= 1U;
             break;
 
         default:
@@ -436,9 +438,9 @@ uint32_t usbh_int_pipe_in (usb_core_driver *pudev, uint32_t pp_num)
         }
 
         pp_reg->HCHINTF = HCHINTF_CH;
-    } else if (intr_pp & HCHINTF_BBER) {
+    } else if (intr_pp & HCHINTF_USBER) {
         pp->err_count++;
-        usb_pp_halt (pudev, pp_num, HCHINTF_BBER, PIPE_TRACERR);
+        usb_pp_halt (pudev, pp_num, HCHINTF_USBER, PIPE_TRACERR);
     } else if (intr_pp & HCHINTF_NAK) {
         switch (ep_type) {
         case USB_EPTYPE_CTRL:

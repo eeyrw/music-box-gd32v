@@ -3,6 +3,7 @@
     \brief   DMA driver
 
     \version 2019-06-05, V1.0.0, firmware for GD32VF103
+    \version 2019-10-30, V1.0.1, firmware for GD32VF103
 */
 
 /*
@@ -527,7 +528,7 @@ void dma_periph_increase_disable(uint32_t dma_periph, dma_channel_enum channelx)
     \param[out] none
     \retval     none
 */
-void dma_transfer_direction_config(uint32_t dma_periph, dma_channel_enum channelx, uint32_t direction)
+void dma_transfer_direction_config(uint32_t dma_periph, dma_channel_enum channelx, uint8_t direction)
 {
     if(ERROR == dma_periph_and_channel_check(dma_periph, channelx)){
         DMA_WRONG_HANDLE
