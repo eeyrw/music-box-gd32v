@@ -61,6 +61,12 @@ lastLimiterGain:
 
 #define SPI_DATA                  (SPI1 + 0x0CU)                   /*!< SPI data register */
 
+#define APB2_BUS_BASE         0x40010000U        /*!< apb2 base address                */
+#define GPIO_BASE             (APB2_BUS_BASE + 0x00000800U)  /*!< GPIO base address                */
+#define GPIOA                     (GPIO_BASE + 0x00000000U)
+#define GPIOA_BOP            (GPIOA + 0x10U)    /*!< GPIO port bit operation register */
+#define GPIOA_BC 	 (GPIOA + 0x14U)    /*!< GPIO bit clear register */
+
 
 .func SynthAsm
 SynthAsm:
@@ -68,6 +74,10 @@ SynthAsm:
 #define pSoundUnit t1
 #define loopIndex t2
 #define mixOut t3
+
+li t5,GPIOA_BOP
+li t4,(0x01<<2)|(0x01<<4)
+sw t4,(t5)
 
 li loopIndex, POLY_NUM
 mv mixOut, x0
@@ -106,7 +116,7 @@ addi pSoundUnit,pSoundUnit,SoundUnitSize
 bnez loopIndex,loopSynth
 
 srai mixOut,mixOut,8 // mixOut/=255 ( envelope)
-li t5,220
+li t5,150
 mul mixOut,t5,mixOut //pre vol
 srai mixOut,mixOut,8
 
@@ -114,8 +124,8 @@ srai mixOut,mixOut,8
 
 #define FIX_POINT_WEIGHT 256
 #define GAIN_1_FIX FIX_POINT_WEIGHT
-#define TIME_CONST_ATTACK_FIX 100
-#define TIME_CONST_RELEASE_FIX 80
+#define TIME_CONST_ATTACK_FIX 0
+#define TIME_CONST_RELEASE_FIX 230
 #define THRESHOLD (32768-1) // 2^16-1
 #define THRESHOLD_FIX THRESHOLD*FIX_POINT_WEIGHT
 beqz mixOut,limiterEnd
@@ -142,6 +152,10 @@ attackSmooth:
     mul t5,t4,t5
     add t6,t5,t6
     srai t6,t6,8
+    li t5,GPIOA_BC
+li t4,0x01<<1
+sw t4,(t5)
+
     j smoothEnd
 releaseSmooth:
     li t4,GAIN_1_FIX-TIME_CONST_RELEASE_FIX
@@ -150,6 +164,9 @@ releaseSmooth:
     mul t5,t4,t5
     add t6,t5,t6
     srai t6,t6,8
+    li t5,GPIOA_BOP
+li t4,0x01<<1
+sw t4,(t5)
 smoothEnd:
 
 bleu t6,t1,extraGainCorrectEnd
@@ -161,6 +178,8 @@ sw t6,(t5)
 mul mixOut,t6,mixOut
 srai mixOut,mixOut,8
 limiterEnd:
+
+
 
 // mixOut /=1<<6, 2^(10-1)<= mixOut <=2^(10-1)-1
 //srai mixOut,mixOut,(8+1)
@@ -183,6 +202,11 @@ li t5,SPI_DATA
 sh mixOut,(t5)
 mv pSoundUnit,a0
 sw mixOut,pMixOut(pSoundUnit)
+
+
+li t5,GPIOA_BC
+li t4,(0x01<<2)|(0x01<<4)
+sw t4,(t5)
 
 ret
 .endfunc
